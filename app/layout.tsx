@@ -35,7 +35,7 @@ export default function RootLayout({
 const boxStyles = {
   top: 0,
   left: 0,
-  position: "absolute",
+  position: "absolute" as "absolute",
   backgroundImage: "url('imgs/waves.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
