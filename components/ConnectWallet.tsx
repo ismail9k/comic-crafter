@@ -14,7 +14,7 @@ function ConnectWallet() {
 
   const handleWalletConnect = async () => {
     const user = await connectWallet();
-    if (user) {
+    if (user as any) {
       setUser(user);
     }
   };
