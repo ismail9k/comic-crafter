@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <main>
       <Box sx={{ textAlign: "center", mb: 10, mt: 10 }}>
-        <Typography style={comicTitleStyle}>Comic Crafter</Typography>
+        <Typography sx={comicTitleStyle}>Comic Crafter</Typography>
       </Box>
 
       <Comics />
@@ -21,13 +21,16 @@ export default function Home() {
 
 const comicTitleStyle = {
   fontFamily: "inherit",
-  fontSize: "100px",
+  fontSize: { xs: "60px", md: "100px" },
   fontWeight: "bold",
   color: "var(--yellow)",
-  textShadow: [-1, 2, 3, 4, 5, 6, 7, 8]
-    .map((val) => `${val}px ${val}px var(--orange)`)
-    .join(", "),
+  textShadow: {
+    xs: [-1, 2, 3].map((val) => `${val}px ${val}px var(--orange)`).join(", "),
+    md: [-1, 2, 3, 4, 5, 6, 7, 8]
+      .map((val) => `${val}px ${val}px var(--orange)`)
+      .join(", "),
+  },
   letterSpacing: "4px",
   lineHeight: "1.5",
-  marginBottom: "50px",
+  marginBottom: { xs: "20px", md: "50px" },
 };

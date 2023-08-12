@@ -53,7 +53,7 @@ export default function Comics() {
     <Box>
       <Grid container spacing={3} justifyContent="center" alignItems="stretch">
         {comics.map((c, indx) => (
-          <Grid item key={indx} xs={3} md={4}>
+          <Grid item key={indx} xs={12} md={4}>
             <Card onClick={() => handleOpen(c)}>
               <CardActionArea>
                 <CardMedia

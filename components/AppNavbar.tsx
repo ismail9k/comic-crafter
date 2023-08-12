@@ -83,6 +83,16 @@ const ResponsiveAppBar = () => {
                   </NextLink>
                 </MenuItem>
               ))}
+              {isConnected && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <NextLink href="/reader" passHref>
+                    <Typography>View Comic</Typography>
+                  </NextLink>
+                </MenuItem>
+              )}
+              <MenuItem>
+                <ConnectWallet />
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -105,15 +115,15 @@ const ResponsiveAppBar = () => {
               </NextLink>
             ))}
           </Box>
-          {isConnected && (
-            <Box sx={{ mr: 2 }}>
-              <NextLink href="/reader" passHref>
-                <Button>View Comic</Button>
-              </NextLink>
-            </Box>
-          )}
 
-          <ConnectWallet />
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {isConnected && (
+              <NextLink href="/reader" passHref>
+                <Button sx={{ mr: 2 }}>View Comic</Button>
+              </NextLink>
+            )}
+            <ConnectWallet />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
