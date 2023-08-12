@@ -1,6 +1,9 @@
 :root {
   --yellow: #fedd03;
   --orange: #f47f19;
+  --dark: rgba(42, 51, 59);
+  --dark-70: rgba(42, 51, 59, 0.7);
+  --dark-40: rgba(42, 51, 59, 0.4);
 }
 
 html,

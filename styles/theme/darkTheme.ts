@@ -13,14 +13,16 @@ const darkTheme = createTheme({
           color: "#fff",
         },
         contained: {
-          background:
-            "linear-gradient(30deg, var(--yellow) 10%, var(--orange) 90%)",
+          background: "var(--yellow)",
           color: "#000",
           fontWeight: "bold",
           transition: "all 200ms ease",
+          boxShadow: "inset 0px -2px var(--orange)",
           ":hover": {
+            background: "var(--yellow)",
             transform: "translateY(-2px)",
-            boxShadow: "0 2px -2px 5px rgba(0, 0, 0, 0.2)",
+            boxShadow:
+              "0 20px 20px -15px var(--dark-70), 0 0 5px var(--dark), inset 0px -2px var(--orange)",
           },
         },
       },
