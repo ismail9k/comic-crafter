@@ -1,29 +1,39 @@
-import { useContext, useEffect } from "react";
-import Button from "@mui/material/Button";
+"use client";
 
-import UserContext from "../store/UserContext";
+import { Button } from "@mui/material";
+import { useWeb3Modal } from "@web3modal/react";
+import { useState } from "react";
+import { useAccount, useDisconnect } from "wagmi";
 
-function ConnectWallet() {
-  const { setUser, connectWallet } = useContext(UserContext);
+export default function ConnectWallet() {
+  const [loading, setLoading] = useState(false);
+  const { open } = useWeb3Modal();
+  const { isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const label = isConnected ? "Disconnect" : "Connect Wallet";
 
-  useEffect(() => {
-    if (localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) {
-      handleWalletConnect();
+  async function onOpen() {
+    setLoading(true);
+    await open();
+    setLoading(false);
+  }
+
+  function onClick() {
+    if (isConnected) {
+      disconnect();
+    } else {
+      onOpen();
     }
-  }, []);
-
-  const handleWalletConnect = async () => {
-    const user = await connectWallet();
-    if (user as any) {
-      setUser(user);
-    }
-  };
+  }
 
   return (
-    <Button onClick={handleWalletConnect} variant="contained" size="large">
-      Connect Wallet
+    <Button
+      onClick={onClick}
+      disabled={loading}
+      variant="contained"
+      size="large"
+    >
+      {loading ? "Loading..." : label}
     </Button>
   );
 }
-
-export default ConnectWallet;

@@ -12,7 +12,6 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 
-import UserContext from "../store/UserContext";
 import ConnectWallet from "./ConnectWallet";
 
 const pages: { title: string; link: string }[] = [
@@ -20,8 +19,6 @@ const pages: { title: string; link: string }[] = [
 ];
 
 const ResponsiveAppBar = () => {
-  const { user } = useContext(UserContext);
-
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -106,23 +103,7 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          <Button
-            href="https://forms.gle/2YnXKjTQK55Y8d229"
-            size="large"
-            target="_blank"
-            sx={{ mx: 2 }}
-          >
-            Feedback
-          </Button>
-          {user ? (
-            <NextLink href={`/users/${user}`} passHref>
-              <Button variant="contained" size="large">
-                Timeline
-              </Button>
-            </NextLink>
-          ) : (
-            <ConnectWallet />
-          )}
+          <ConnectWallet />
         </Toolbar>
       </Container>
     </AppBar>
