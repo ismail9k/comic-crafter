@@ -3,8 +3,7 @@
 import { Box, Typography } from "@mui/material";
 
 import Comics from "../components/Comics";
-
-import HomeLinks from "@/components/HomeLinks";
+import HomeLinks from "../components/HomeLinks";
 
 export default function Home() {
   return (

@@ -37,8 +37,8 @@ export default function HomeLinks() {
       sx={{ mt: 10, mb: 10 }}
     >
       {links.map((link) => (
-        <Grid item md={3} sm={6}>
-          <a key={link.title} href={link.link}>
+        <Grid item md={3} sm={6} key={link.title}>
+          <a href={link.link}>
             <h2>
               {link.title} <span>-&gt;</span>
             </h2>

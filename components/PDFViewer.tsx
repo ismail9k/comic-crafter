@@ -1,6 +1,6 @@
+import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Box, Button } from "@mui/material";
 
 // Set up the worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
