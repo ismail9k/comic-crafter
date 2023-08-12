@@ -11,9 +11,18 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
+import {
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
+import BookPublisher from "../assets/data/BookPublisher.json";
 import comics from "../assets/data/comics.json";
 import font from "../styles/theme/font";
+
+import ConnectWallet from "./ConnectWallet";
 
 function excerpt(description) {
   const maxLength = 100;
@@ -37,6 +46,24 @@ const style = {
 export default function Comics() {
   const [open, setOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
+  const { address, isConnected } = useAccount();
+
+  const { config, error } = usePrepareContractWrite({
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+    abi: BookPublisher.abi,
+    functionName: "buySuperNFT",
+    args: [address],
+  });
+
+  console.log(error);
+
+  const { write, data } = useContractWrite(config);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
   const handleOpen = (comic) => {
     setSelectedComic(comic);
     setOpen(true);
@@ -46,7 +73,7 @@ export default function Comics() {
   };
 
   const handleMinting = () => {
-    // TODO
+    write?.();
   };
 
   return (
@@ -109,15 +136,19 @@ export default function Comics() {
               </Typography>
             </CardContent>
 
-            <CardActions>
-              <Button
-                style={{ marginInlineStart: "auto" }}
-                onClick={handleMinting}
-                variant="contained"
-                size="large"
-              >
-                Mint NFT
-              </Button>
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+              {isConnected ? (
+                <Button
+                  disabled={!write}
+                  onClick={handleMinting}
+                  variant="contained"
+                  size="large"
+                >
+                  {isLoading ? "Loading..." : "Mint NFT"}
+                </Button>
+              ) : (
+                <ConnectWallet />
+              )}
             </CardActions>
           </Card>
         </Box>

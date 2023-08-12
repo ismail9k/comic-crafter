@@ -59,7 +59,13 @@ export default function RootLayout({
             </ThemeProvider>
           </WagmiConfig>
         ) : null}
-        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+        <Web3Modal
+          projectId={projectId}
+          ethereumClient={ethereumClient}
+          themeVariables={{
+            "--w3m-z-index": "90000",
+          }}
+        />
       </body>
     </html>
   );
