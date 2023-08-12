@@ -36,7 +36,9 @@ const style = {
 
 export default function Comics({ onClick }) {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
+  const [selectedComic, setSelectedComic] = useState(comics[0]);
+  const handleOpen = (comic) => {
+    setSelectedComic(comic);
     setOpen(true);
   };
   const handleClose = () => {
@@ -52,7 +54,7 @@ export default function Comics({ onClick }) {
       <Grid container spacing={3} justifyContent="center" alignItems="stretch">
         {comics.map((c, indx) => (
           <Grid item key={indx} xs={3} md={4}>
-            <Card onClick={handleOpen}>
+            <Card onClick={() => handleOpen(c)}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -75,51 +77,51 @@ export default function Comics({ onClick }) {
                 </CardContent>
               </CardActionArea>
             </Card>
-
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="child-modal-title"
-              aria-describedby="child-modal-description"
-            >
-              <Box sx={style}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="400"
-                    src={`/imgs/${c.img}`}
-                    alt={c.title}
-                  />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                      className={font.className}
-                    >
-                      {c.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {c.description}
-                    </Typography>
-                  </CardContent>
-
-                  <CardActions>
-                    <Button
-                      style={{ marginInlineStart: "auto" }}
-                      onClick={handleMinting}
-                      variant="contained"
-                      size="large"
-                    >
-                      Mint NFT
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Box>
-            </Modal>
           </Grid>
         ))}
       </Grid>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={style}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="400"
+              src={`/imgs/${selectedComic.img}`}
+              alt={selectedComic.title}
+            />
+            <CardContent>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                className={font.className}
+              >
+                {selectedComic.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {selectedComic.description}
+              </Typography>
+            </CardContent>
+
+            <CardActions>
+              <Button
+                style={{ marginInlineStart: "auto" }}
+                onClick={handleMinting}
+                variant="contained"
+                size="large"
+              >
+                Mint NFT
+              </Button>
+            </CardActions>
+          </Card>
+        </Box>
+      </Modal>
     </Box>
   );
 }
