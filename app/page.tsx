@@ -4,54 +4,18 @@ import { Box, Typography } from "@mui/material";
 
 import Comics from "../components/Comics";
 
-import styles from "./page.module.css";
-
-const links = [
-  {
-    title: "About",
-    link: "/about",
-    description:
-      "Explore detailed information about the project, its mission, and vision.",
-  },
-  {
-    title: "Team",
-    link: "/team",
-    description:
-      "Meet the creative minds and dedicated professionals behind the project.",
-  },
-  {
-    title: "Feedback",
-    link: "/feedback",
-    description:
-      "Share your thoughts and insights to help us improve and grow.",
-  },
-  {
-    title: "NFTs",
-    link: "/nfts",
-    description:
-      "Discover our unique collection of NFTs and learn how to get involved.",
-  },
-];
+import HomeLinks from "@/components/HomeLinks";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <Box>
+    <main>
+      <Box sx={{ textAlign: "center", mb: 10, mt: 10 }}>
         <Typography style={comicTitleStyle}>Comic Crafter</Typography>
       </Box>
 
       <Comics />
 
-      <div className={styles.grid}>
-        {links.map((link) => (
-          <a key={link.title} href={link.link} className={styles.card}>
-            <h2>
-              {link.title} <span>-&gt;</span>
-            </h2>
-            <p>{link.description}</p>
-          </a>
-        ))}
-      </div>
+      <HomeLinks />
     </main>
   );
 }

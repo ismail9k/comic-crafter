@@ -54,7 +54,7 @@ export default function RootLayout({
               <Box style={{ position: "relative" }}>
                 <Box style={boxStyles}></Box>
                 <AppNavbar />
-                <Container>{children}</Container>
+                <Container sx={{ pt: 10, pb: 10 }}>{children}</Container>
               </Box>
             </ThemeProvider>
           </WagmiConfig>
@@ -71,7 +71,7 @@ const boxStyles = {
   position: "absolute" as const,
   backgroundImage: "url('imgs/waves.png')",
   backgroundRepeat: "no-repeat",
-  backgroundSize: "contain",
+  backgroundSize: "100% auto",
   backgroundPosition: "center center",
   width: "100%",
   height: "100%",
