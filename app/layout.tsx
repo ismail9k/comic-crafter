@@ -1,12 +1,8 @@
 "use client";
 import "../styles/globals.css";
 
-import AppNavbar from "../components/AppNavbar";
-import Container from "@mui/material/Container";
-import darkTheme from "../styles/theme/darkTheme";
-import font from "../styles/theme/font";
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
-
+import Container from "@mui/material/Container";
 import {
   EthereumClient,
   w3mConnectors,
@@ -16,6 +12,10 @@ import { Web3Modal } from "@web3modal/react";
 import { useEffect, useState } from "react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, optimism, polygon } from "wagmi/chains";
+
+import AppNavbar from "../components/AppNavbar";
+import darkTheme from "../styles/theme/darkTheme";
+import font from "../styles/theme/font";
 
 if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
@@ -47,16 +47,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <WagmiConfig config={wagmiConfig}>
-          <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <Box style={{ position: "relative" }}>
-              <Box style={boxStyles}></Box>
-              <AppNavbar />
-              <Container>{children}</Container>
-            </Box>
-          </ThemeProvider>
-        </WagmiConfig>
+        {ready ? (
+          <WagmiConfig config={wagmiConfig}>
+            <ThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <Box style={{ position: "relative" }}>
+                <Box style={boxStyles}></Box>
+                <AppNavbar />
+                <Container>{children}</Container>
+              </Box>
+            </ThemeProvider>
+          </WagmiConfig>
+        ) : null}
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
       </body>
     </html>
@@ -66,7 +68,7 @@ export default function RootLayout({
 const boxStyles = {
   top: 0,
   left: 0,
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   backgroundImage: "url('imgs/waves.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",

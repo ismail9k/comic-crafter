@@ -1,11 +1,10 @@
-import NextLink from "next/link";
-
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Stack";
+import NextLink from "next/link";
 
-const AppFooter = ({ activeFilters, filters, onClick }) => {
+const AppFooter = () => {
   return (
     <Box sx={{ p: 5, alignItems: "center", borderTop: 1 }}>
       <Stack

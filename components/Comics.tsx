@@ -1,6 +1,3 @@
-import comics from "../assets/data/comics.json";
-import font from "../styles/theme/font";
-
 import {
   Grid,
   Box,
@@ -15,6 +12,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import comics from "../assets/data/comics.json";
+import font from "../styles/theme/font";
+
 function excerpt(description) {
   const maxLength = 100;
   return description.length > maxLength
@@ -23,7 +23,7 @@ function excerpt(description) {
 }
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -34,7 +34,7 @@ const style = {
   maxHeight: "100vh",
 };
 
-export default function Comics({ onClick }) {
+export default function Comics() {
   const [open, setOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
   const handleOpen = (comic) => {

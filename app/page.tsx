@@ -1,8 +1,10 @@
 "use client";
 
-import styles from "./page.module.css";
-import Comics from "../components/Comics";
 import { Box, Typography } from "@mui/material";
+
+import Comics from "../components/Comics";
+
+import styles from "./page.module.css";
 
 const links = [
   {
@@ -38,7 +40,7 @@ export default function Home() {
         <Typography style={comicTitleStyle}>Comic Crafter</Typography>
       </Box>
 
-      <Comics onClick={() => {}} />
+      <Comics />
 
       <div className={styles.grid}>
         {links.map((link) => (
