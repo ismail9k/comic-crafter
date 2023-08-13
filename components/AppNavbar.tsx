@@ -11,15 +11,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 
 import ConnectWallet from "./ConnectWallet";
-
-const pages: { title: string; link: string }[] = [
-  // { title: "Home", link: "/" },
-];
+import NetworkSelector from "./NetworkSelector";
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const { isConnected } = useAccount();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -73,13 +72,11 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <NextLink key={page.title} href={page.link} passHref>
-                    <Typography textAlign="center">{page.title}</Typography>
-                  </NextLink>
+              {isConnected && (
+                <MenuItem>
+                  <NetworkSelector />
                 </MenuItem>
-              ))}
+              )}
               <MenuItem>
                 <ConnectWallet />
               </MenuItem>
@@ -93,20 +90,10 @@ const ResponsiveAppBar = () => {
           >
             Comic Crafter
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NextLink key={page.title} href={page.link} passHref>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.title}
-                </Button>
-              </NextLink>
-            ))}
-          </Box>
 
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {isConnected && <NetworkSelector />}
             <ConnectWallet />
           </Box>
         </Toolbar>
