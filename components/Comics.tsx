@@ -20,7 +20,6 @@ import {
 
 import BookPublisher from "../assets/data/BookPublisher.json";
 import comics from "../assets/data/comics.json";
-import font from "../styles/theme/font";
 
 import ConnectWallet from "./ConnectWallet";
 import Loader from "./Loader";
@@ -142,7 +141,7 @@ export default function Comics() {
                     gutterBottom
                     variant="h5"
                     component="div"
-                    className={font.className}
+                    sx={{ fontFamily: "inherit" }}
                   >
                     {c.title}
                   </Typography>
@@ -175,7 +174,7 @@ export default function Comics() {
                 gutterBottom
                 variant="h5"
                 component="div"
-                className={font.className}
+                sx={{ fontFamily: "inherit" }}
               >
                 {selectedComic.title}
               </Typography>
