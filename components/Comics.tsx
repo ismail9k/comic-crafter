@@ -17,9 +17,12 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { optimismGoerli,avalancheFuji } from "wagmi/chains";
+import { getNetwork } from '@wagmi/core'
 
 import BookPublisher from "../assets/data/BookPublisher.json";
+import CrisssChainTokenSender from "../assets/data/CrossChainTokenSender.json";
+import ERC20 from "../assets/data/ERC20.json";
 import comics from "../assets/data/comics.json";
 
 import ConnectWallet from "./ConnectWallet";
@@ -45,6 +48,7 @@ const backdropStyle = {
 };
 
 export default function Comics() {
+  const { chain, chains } = getNetwork()
   const [isComicModalOpen, setIsComicModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
@@ -60,6 +64,8 @@ export default function Comics() {
     args: [address],
   });
 
+
+ 
   const { write, data, error, isError } = useContractWrite(config);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -88,9 +94,19 @@ export default function Comics() {
   };
 
   const handleMinting = async () => {
-    await connector?.connect({ chainId: goerli.id });
+   
+    if (chain?.id == optimismGoerli.id) {
+      // mint native 
+         await connector?.connect({ chainId: optimismGoerli.id });
     handleOpenInfoModal();
-    write?.();
+    //write?.();
+    } else if (chain?.id == avalancheFuji.id) { 
+      // mint cross chain
+         await connector?.connect({ chainId: avalancheFuji.id });
+    handleOpenInfoModal();
+   // write?.();
+    }
+ 
   };
 
   function renderContent() {
@@ -105,7 +121,7 @@ export default function Comics() {
             <Button
               variant="outlined"
               size="large"
-              href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+              href={`https://goerli-optimism.etherscan.io//tx/${data?.hash}`}
               target="_blank"
             >
               Etherscan
