@@ -18,11 +18,10 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { optimismGoerli, avalancheFuji } from "wagmi/chains";
+import { optimismGoerli } from "wagmi/chains";
 
 import BookPublisher from "../assets/data/BookPublisher.json";
 import comics from "../assets/data/comics.json";
-import CrisssChainTokenSender from "../assets/data/CrossChainTokenSender.json";
 import ERC20 from "../assets/data/ERC20.json";
 
 import ConnectWallet from "./ConnectWallet";
@@ -48,11 +47,11 @@ const backdropStyle = {
 };
 
 export default function Comics() {
-  const { chain, chains } = getNetwork();
+  const { chain } = getNetwork();
   const [isComicModalOpen, setIsComicModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected } = useAccount();
   const {
     config,
     error: prepareError,
