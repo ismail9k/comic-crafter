@@ -6,7 +6,7 @@ import "./style.css";
 export default function Home() {
   return (
     <main>
-      <PDFViewer file="api-design.pdf" />
+      <PDFViewer file="comic_series_01.pdf" />
     </main>
   );
 }

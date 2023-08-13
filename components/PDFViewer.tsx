@@ -41,7 +41,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
           renderTextLayer={false}
           pageNumber={pageNumber}
           canvasBackground="transparent"
-          width={500}
+          width={700}
           height={500}
         />
       </Document>
