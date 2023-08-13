@@ -101,17 +101,19 @@ export default function Comics() {
           <Typography variant="h2" sx={{ fontFamily: "inherit", mb: 2 }}>
             Successfully minted your NFT!
           </Typography>
-          <div>
+          <Box sx={{ display: "flex", gap: 10 }}>
             <Button
               variant="outlined"
-              fullWidth={true}
               size="large"
               href={`https://goerli.etherscan.io/tx/${data?.hash}`}
               target="_blank"
             >
               Etherscan
             </Button>
-          </div>
+            <Button variant="outlined" size="large" href={`/user`}>
+              View
+            </Button>
+          </Box>
         </>
       );
     if (isPrepareError || isError || isTransError)

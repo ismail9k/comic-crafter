@@ -11,7 +11,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 import { useState } from "react";
-import { useAccount } from "wagmi";
 
 import ConnectWallet from "./ConnectWallet";
 
@@ -20,8 +19,6 @@ const pages: { title: string; link: string }[] = [
 ];
 
 const ResponsiveAppBar = () => {
-  const { isConnected } = useAccount();
-
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -83,13 +80,6 @@ const ResponsiveAppBar = () => {
                   </NextLink>
                 </MenuItem>
               ))}
-              {isConnected && (
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <NextLink href="/reader" passHref>
-                    <Typography>View Comic</Typography>
-                  </NextLink>
-                </MenuItem>
-              )}
               <MenuItem>
                 <ConnectWallet />
               </MenuItem>
@@ -117,11 +107,6 @@ const ResponsiveAppBar = () => {
           </Box>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {isConnected && (
-              <NextLink href="/reader" passHref>
-                <Button sx={{ mr: 2 }}>View Comic</Button>
-              </NextLink>
-            )}
             <ConnectWallet />
           </Box>
         </Toolbar>
