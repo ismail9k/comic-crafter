@@ -17,6 +17,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+import { goerli } from "wagmi/chains";
 
 import BookPublisher from "../assets/data/BookPublisher.json";
 import comics from "../assets/data/comics.json";
@@ -47,8 +48,7 @@ export default function Comics() {
   const [isComicModalOpen, setIsComicModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
-  const { address, isConnected } = useAccount();
-
+  const { address, isConnected, connector } = useAccount();
   const {
     config,
     error: prepareError,
@@ -58,7 +58,6 @@ export default function Comics() {
     abi: BookPublisher.abi,
     functionName: "buySuperNFT",
     args: [address],
-    enabled: !!address,
   });
 
   const { write, data, error, isError } = useContractWrite(config);
@@ -88,7 +87,8 @@ export default function Comics() {
     setIsInfoModalOpen(false);
   };
 
-  const handleMinting = () => {
+  const handleMinting = async () => {
+    await connector?.connect({ chainId: goerli.id });
     handleOpenInfoModal();
     write?.();
   };
@@ -188,7 +188,6 @@ export default function Comics() {
             <CardActions sx={{ justifyContent: "flex-end" }}>
               {isConnected ? (
                 <Button
-                  disabled={!write}
                   onClick={handleMinting}
                   variant="contained"
                   size="large"

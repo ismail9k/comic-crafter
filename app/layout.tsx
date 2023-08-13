@@ -11,7 +11,7 @@ import {
 import { Web3Modal } from "@web3modal/react";
 import { useEffect, useState } from "react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { goerli, optimism } from "wagmi/chains";
+import { goerli, sepolia, optimismGoerli, avalancheFuji } from "wagmi/chains";
 
 import AppNavbar from "../components/AppNavbar";
 import darkTheme from "../styles/theme/darkTheme";
@@ -22,7 +22,7 @@ if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
 }
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
-const chains = [goerli, optimism];
+const chains = [goerli, sepolia, optimismGoerli, avalancheFuji];
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiConfig = createConfig({
@@ -40,9 +40,7 @@ export default function RootLayout({
 }) {
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    setReady(true);
-  }, []);
+  useEffect(() => setReady(true), []);
 
   return (
     <html lang="en">
