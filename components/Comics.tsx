@@ -76,6 +76,27 @@ export default function Comics() {
     hash: data?.hash,
   });
 
+  const paymentTo = optimismGoerli.id
+    ? (process.env.NEXT_PUBLIC_OP_CONTRACT_ADDRESS as `0x${string}`)
+    : (process.env.NEXT_PUBLIC_CROSS_CHAIN_CONTRACT_ADDRESS as `0x${string}`);
+
+  const paymentTokenAddress =
+    chain?.id == optimismGoerli.id
+      ? (process.env.NEXT_PUBLIC_OP_PAYEMNT_CONTRACT_ADDRESS as `0x${string}`)
+      : (process.env
+          .NEXT_PUBLIC_FUJI_PAYEMNT_CONTRACT_ADDRESS as `0x${string}`);
+
+  const paymentFunctionName =
+    chain?.id == optimismGoerli.id ? "approve" : "transfer";
+
+  const { config: paymentConfig } = usePrepareContractWrite({
+    address: paymentTokenAddress,
+    abi: ERC20.abi,
+    functionName: paymentFunctionName,
+    args: [paymentTo, 500],
+  });
+  const { write: writePayment } = useContractWrite(paymentConfig);
+
   const handleOpenComicModal = (comic) => {
     setSelectedComic(comic);
     setIsComicModalOpen(true);
@@ -92,17 +113,13 @@ export default function Comics() {
   };
 
   const handleMinting = async () => {
-    if (chain?.id == optimismGoerli.id) {
-      // mint native
-      await connector?.connect({ chainId: optimismGoerli.id });
-      handleOpenInfoModal();
-      //write?.();
-    } else if (chain?.id == avalancheFuji.id) {
-      // mint cross chain
-      await connector?.connect({ chainId: avalancheFuji.id });
-      handleOpenInfoModal();
-      // write?.();
-    }
+    // if (![optimismGoerli.id, avalancheFuji.id].includes(chain?.id)) {
+    //   await connector?.connect({ chainId: optimismGoerli.id });
+    // }
+
+    await writePayment?.();
+    handleOpenInfoModal();
+    write?.();
   };
 
   function renderContent() {
