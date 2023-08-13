@@ -23,6 +23,7 @@ import comics from "../assets/data/comics.json";
 import font from "../styles/theme/font";
 
 import ConnectWallet from "./ConnectWallet";
+import Loader from "./Loader";
 
 function excerpt(description) {
   const maxLength = 100;
@@ -31,7 +32,7 @@ function excerpt(description) {
     : description;
 }
 
-const style = {
+const backdropStyle = {
   position: "absolute" as const,
   top: "50%",
   left: "50%",
@@ -44,44 +45,91 @@ const style = {
 };
 
 export default function Comics() {
-  const [open, setOpen] = useState(false);
+  const [isComicModalOpen, setIsComicModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
   const { address, isConnected } = useAccount();
 
-  const { config, error } = usePrepareContractWrite({
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi: BookPublisher.abi,
     functionName: "buySuperNFT",
     args: [address],
+    enabled: !!address,
   });
 
-  console.log(error);
-
-  const { write, data } = useContractWrite(config);
+  const { write, data, error, isError } = useContractWrite(config);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const {
+    isLoading,
+    isSuccess,
+    isError: isTransError,
+    error: transError,
+  } = useWaitForTransaction({
     hash: data?.hash,
   });
 
-  const handleOpen = (comic) => {
+  const handleOpenComicModal = (comic) => {
     setSelectedComic(comic);
-    setOpen(true);
+    setIsComicModalOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseComicModal = () => {
+    setIsComicModalOpen(false);
+  };
+  const handleOpenInfoModal = () => {
+    setIsInfoModalOpen(true);
+  };
+  const handleCloseInfoModal = () => {
+    if (isLoading) return;
+    setIsInfoModalOpen(false);
   };
 
   const handleMinting = () => {
+    handleOpenInfoModal();
     write?.();
   };
+
+  function renderContent() {
+    if (isLoading) return <Loader />;
+    if (isSuccess)
+      return (
+        <>
+          <Typography variant="h2" sx={{ fontFamily: "inherit", mb: 2 }}>
+            Successfully minted your NFT!
+          </Typography>
+          <div>
+            <Button
+              variant="outlined"
+              fullWidth={true}
+              size="large"
+              href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+              target="_blank"
+            >
+              Etherscan
+            </Button>
+          </div>
+        </>
+      );
+    if (isPrepareError || isError || isTransError)
+      return (
+        <Typography variant="h5" sx={{ fontFamily: "inherit" }}>
+          Error: {(prepareError || error || transError)?.message}
+        </Typography>
+      );
+    return <Loader />;
+  }
 
   return (
     <Box>
       <Grid container spacing={3} justifyContent="center" alignItems="stretch">
         {comics.map((c, indx) => (
           <Grid item key={indx} xs={12} md={4}>
-            <Card onClick={() => handleOpen(c)}>
+            <Card onClick={() => handleOpenComicModal(c)}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -109,12 +157,12 @@ export default function Comics() {
       </Grid>
 
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isComicModalOpen}
+        onClose={handleCloseComicModal}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={backdropStyle}>
           <Card>
             <CardMedia
               component="img"
@@ -144,13 +192,33 @@ export default function Comics() {
                   variant="contained"
                   size="large"
                 >
-                  {isLoading ? "Loading..." : "Mint NFT"}
+                  Mint NFT
                 </Button>
               ) : (
                 <ConnectWallet />
               )}
             </CardActions>
           </Card>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={isInfoModalOpen}
+        onClose={handleCloseInfoModal}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={backdropStyle}>
+          <Box
+            sx={{
+              p: 5,
+              width: "100%",
+              background: "var(--yellow)",
+              color: "#000",
+            }}
+          >
+            {renderContent()}
+          </Box>
         </Box>
       </Modal>
     </Box>
