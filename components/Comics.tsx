@@ -10,6 +10,7 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import { getNetwork } from "@wagmi/core";
 import { useState } from "react";
 import {
   useAccount,
@@ -17,13 +18,12 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { optimismGoerli,avalancheFuji } from "wagmi/chains";
-import { getNetwork } from '@wagmi/core'
+import { optimismGoerli, avalancheFuji } from "wagmi/chains";
 
 import BookPublisher from "../assets/data/BookPublisher.json";
+import comics from "../assets/data/comics.json";
 import CrisssChainTokenSender from "../assets/data/CrossChainTokenSender.json";
 import ERC20 from "../assets/data/ERC20.json";
-import comics from "../assets/data/comics.json";
 
 import ConnectWallet from "./ConnectWallet";
 import Loader from "./Loader";
@@ -48,7 +48,7 @@ const backdropStyle = {
 };
 
 export default function Comics() {
-  const { chain, chains } = getNetwork()
+  const { chain, chains } = getNetwork();
   const [isComicModalOpen, setIsComicModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedComic, setSelectedComic] = useState(comics[0]);
@@ -64,8 +64,6 @@ export default function Comics() {
     args: [address],
   });
 
-
- 
   const { write, data, error, isError } = useContractWrite(config);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -94,19 +92,17 @@ export default function Comics() {
   };
 
   const handleMinting = async () => {
-   
     if (chain?.id == optimismGoerli.id) {
-      // mint native 
-         await connector?.connect({ chainId: optimismGoerli.id });
-    handleOpenInfoModal();
-    //write?.();
-    } else if (chain?.id == avalancheFuji.id) { 
+      // mint native
+      await connector?.connect({ chainId: optimismGoerli.id });
+      handleOpenInfoModal();
+      //write?.();
+    } else if (chain?.id == avalancheFuji.id) {
       // mint cross chain
-         await connector?.connect({ chainId: avalancheFuji.id });
-    handleOpenInfoModal();
-   // write?.();
+      await connector?.connect({ chainId: avalancheFuji.id });
+      handleOpenInfoModal();
+      // write?.();
     }
- 
   };
 
   function renderContent() {
