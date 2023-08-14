@@ -24,6 +24,7 @@ export default function NetworkSelector() {
       connector?.off("change", handleChange);
     };
   }, [connector]);
+
   const handleInputChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;
     setNetwork(value);
