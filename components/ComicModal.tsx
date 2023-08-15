@@ -123,7 +123,7 @@ export default function ComicModal({ open, data, onClose }) {
 
   const handleMinting = async () => {
     handleOpenInfoModal();
-    await paymentAction.write?.();
+    refetch().then(() => buyNFTAction.write?.());
   };
 
   function renderContent() {
@@ -138,7 +138,7 @@ export default function ComicModal({ open, data, onClose }) {
             <Button
               variant="outlined"
               size="large"
-              href={`https://goerli-optimism.etherscan.io//tx/${data?.hash}`}
+              href={`https://goerli-optimism.etherscan.io/tx/${data?.hash}`}
               target="_blank"
             >
               Etherscan
