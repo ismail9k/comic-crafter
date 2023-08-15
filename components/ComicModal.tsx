@@ -80,7 +80,7 @@ export default function ComicModal({ open, data, onClose }) {
       : [
           destinationChainSelector,
           process.env.NEXT_PUBLIC_OP_CONTRACT_ADDRESS,
-          process.env.NEXT_PUBLIC_OP_PAYEMNT_CONTRACT_ADDRESS,
+          process.env.NEXT_PUBLIC_FUJI_PAYEMNT_CONTRACT_ADDRESS,
           amount,
         ],
     enabled: false,
@@ -123,7 +123,7 @@ export default function ComicModal({ open, data, onClose }) {
 
   const handleMinting = async () => {
     handleOpenInfoModal();
-    refetch().then(() => buyNFTAction.write?.());
+    paymentAction.write?.();
   };
 
   function renderContent() {
