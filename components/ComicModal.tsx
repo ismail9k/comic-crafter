@@ -63,7 +63,7 @@ export default function ComicModal({ open, data, onClose }) {
   const paymentConfig = usePrepareContractWrite({
     address: paymentAddress as Address,
     abi: ERC20.abi,
-    functionName: isOptimismGoerli ? "approve" : "transfer",
+    functionName: "approve",
     args: [paymentTo, amount],
   });
 
